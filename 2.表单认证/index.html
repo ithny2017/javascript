@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+
+        .right{
+            color: lightgreen;
+        }
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<label for="result">成绩:</label>
+<input type="text" id="result" placeholder="请输入成绩">
+<span id="span"></span>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var result = document.getElementById('result');
+        var span = document.getElementById('span');
+        /*失去焦点*/
+        result.onblur = function () {
+            result.style.outline = 'auto';
+            if(result.value === ""){
+                s_result('请输入你的成绩!','error','red');
+            }else if(isNaN(result.value)){
+                s_result('请输入正确的成绩!','error','red');
+            }else if(result.value >= 0 && result.value <= 100){
+                s_result('输入的成绩正确!','right','lightgreen');
+            }else{
+                s_result('请输入0-100的成绩!','error','red');
+            }
+        };
+        /*获取焦点*/
+        result.onfocus = function () {
+            result.value = '';
+            result.style.outline = 'none';
+            span.innerText = '';
+        }
+        
+        /*封装*/
+        function s_result(message,className,color) {
+            span.innerText = message;
+            span.className = className;
+            result.style.outlineColor = color;
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        body{
+            background-color: pink;
+        }
+        #box{
+            width: 900px;
+            height: 63px;
+            margin: 100px auto;
+            background: url("images/t-mall4.jpg") no-repeat right center #fff;
+            position: relative;
+        }
+        #span{
+            width: 88px;
+            height: 50px;
+            margin-top: 5px;
+            background: url("images/t-mall.png") no-repeat;
+            position: absolute;
+            background-size: 100% 100%;
+        }
+        #box ul{
+            width: 900px;
+            height: 63px;
+            position: relative;
+            border-radius: 5px;
+        }
+        #box ul li{
+            width: 88px;
+            height: 63px;
+            line-height: 63px;
+            float: left;
+            text-align: center;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<nav id="box">
+    <!--<span id="span"><img src="images/t-mall.png" width="88px" height="50px" alt=""></span>-->
+    <span id="span"></span>
+    <ul>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+        <li>导航选项</li>
+    </ul>
+</nav>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        /*
+        * offset获取有定位的父元素与自己之间的尺寸(offsetleft,offsettop);
+        * offset获取自己的尺寸:内容 + padding + border;
+        * offset只能获取尺寸，不能改变尺寸(不需要定位)
+        * style.left可以获取和改变尺寸(需要定位)
+        * */
+
+        var box = document.getElementById('box');
+        var span = document.getElementById('span');
+        var lis = box.getElementsByTagName('li');
+        /*记录鼠标按下时的位置*/
+        var beginX = 0;
+
+        for(var i=0;i<lis.length;i++){
+            var li = lis[i];
+            /*鼠标移到*/
+            li.onmouseover = function () {
+                end = this.offsetLeft;
+            }
+            /*鼠标按下*/
+
+            li.onmousedown = function () {
+                beginX = this.offsetLeft;
+            }
+            /*鼠标离开*/
+            li.onmouseout = function () {
+                end = beginX;
+            }
+        }
+
+        /*缓速动画*/
+        var begin = 0, end = 0;
+        timer = setInterval(function () {
+            begin = begin + (end - begin) * 0.1;
+            span.style.left = begin + 'px';
+        },10)
+    }
+</script>
+</html>

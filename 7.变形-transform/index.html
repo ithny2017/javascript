@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+<button id="btn">点我变形</button>
+<div id="box"></div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+
+        var btn = document.getElementById('btn');
+        var box = document.getElementById('box');
+
+        var index = 0;
+
+        btn.onclick = function () {
+            index ++;
+            box.style.transform = 'translate('+(index * 100)+'px,'+(index * 100)+'px) rotate('+(index * 30)+'deg) scale('+index +')';
+        }
+    }
+</script>
+</html>

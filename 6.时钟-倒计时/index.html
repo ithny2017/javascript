@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #span{
+            width: 500px;
+            display: block;
+            margin: 0 auto;
+            font-size: 23px;
+            color: red;
+        }
+        #box{
+            width: 275px;
+            height: 275px;
+            margin: 50px auto;
+            position: relative;
+            background: url("images/index.png") no-repeat center center;
+        }
+        #hour{
+            width: 275px;
+            height: 275px;
+            position: absolute;
+            background: url("images/hour.png") no-repeat center center;
+        }
+        #min{
+            width: 275px;
+            height: 275px;
+            position: absolute;
+            background: url("images/min.png") no-repeat center center;
+        }
+        #second{
+            width: 275px;
+            height: 275px;
+            position: absolute;
+            background: url("images/second.png") no-repeat center center;
+        }
+    </style>
+</head>
+<body>
+<span id="span"></span>
+<div id="box">
+    <div id="hour"></div>
+    <div id="min"></div>
+    <div id="second"></div>
+</div>
+</body>
+
+<script type="text/javascript">
+    window.onload = function () {
+
+        var hour = document.getElementById('hour');
+        var min = document.getElementById('min');
+        var second = document.getElementById('second');
+
+        var span = document.getElementById('span');
+        var nextDate = new Date('2019/2/5 10:10:19');
+
+        /*倒计时*/
+        setInterval(function () {
+            var date = new Date();
+
+            var millisDate = date.getTime();
+            var millisNextDate = nextDate.getTime();
+
+            var allTime = millisNextDate - millisDate;
+            var allSecond = parseInt(allTime/1000);
+
+            var d = _size(parseInt(allSecond/3600/24));
+            var h = _size(parseInt(allSecond/3600%24));
+            var m = _size(parseInt(allSecond/60%60));
+            var s = _size(parseInt(allSecond%60));
+
+            span.innerText = '距离放假还有'+d+'天'+h+'小时'+m+'分钟'+s+'秒';
+        },1000);
+
+        /*小于10前面加0*/
+        function _size(num) {
+            if(num === 0)return 0;
+            return num >= 10 ? num : '0'+ num;
+        }
+
+        /*时钟*/
+        setInterval(function () {
+            var date = new Date();
+            var mills = date.getMilliseconds();
+
+            var s = date.getSeconds()+mills/1000;//加上多出来的毫秒
+            var m = date.getMinutes()+s/60;//加上多出来的秒钟
+            var h = date.getHours()%12+m/60;//加上多出来的分钟
+
+            /**
+             * 表盘360度
+             * h = 360/12;
+             * m = 360/60;
+             * s = 360/60;
+             */
+            hour.style.transform = 'rotate('+(h*30)+'deg)';
+            min.style.transform = 'rotate('+(m*6)+'deg)';
+            second.style.transform = 'rotate('+(s*6)+'deg)';
+        },1000);
+    }
+</script>
+</html>

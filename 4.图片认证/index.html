@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<label for="file">上传图片:</label>
+<input type="file"  id="file">
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+
+        var file = document.getElementById('file');
+
+        file.onchange= function () {
+
+            var path = this.value;
+
+            var suffix = path.substr(path.lastIndexOf('.'));
+
+            var lower_suffix = suffix.toLowerCase();
+
+            if(lower_suffix === '.jpg' || lower_suffix === '.jpeg' || lower_suffix === '.png' || lower_suffix === '.gif'){
+                alert('图片格式正确!');
+            }else{
+                alert('图片格式不正确!');
+            }
+        }
+    }
+</script>
+</html>

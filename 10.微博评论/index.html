@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #box{
+            width: 500px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            padding: 20px;
+        }
+        #top-box{
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        ul{
+            margin: 0 60px;
+        }
+        ul li{
+            line-height: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            color: red;
+        }
+        ul li a{
+            text-decoration: none;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="top-box">
+        <label>发表评论:</label>
+        <textarea id="common" cols="60" rows="10"></textarea>
+        <button id="btn">提交</button>
+    </div>
+    <ul id="ul">
+    </ul>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var btn = document.getElementById('btn');
+        var common = document.getElementById('common');
+        var ul = document.getElementById('ul');
+        btn.onclick = function () {
+
+            var text = common.value;
+            var li = document.createElement('li');
+            if(text === ''){
+                alert('评论不能为空!');
+                return;
+            }
+            /*追加到ul的第一个元素前面*/
+            li.innerHTML = text+"<a href='#'>删除</a>";
+            ul.insertBefore(li,ul.children[0]);
+            /*清空文本域*/
+            common.value = '';
+
+            /*删除评论*/
+            var as = ul.getElementsByTagName('a');
+            for(var i=0;i<as.length;i++){
+                var a = as[i];
+                a.onclick = function () {
+                this.parentNode.remove();
+                }
+            }
+        };
+
+    }
+</script>
+</html>

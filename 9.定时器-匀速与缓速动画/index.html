@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+
+    </style>
+</head>
+<body>
+<button id="btn">点我</button>
+<div id="box"></div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        
+        var btn = document.getElementById('btn');
+        var box = document.getElementById('box');
+        var timer = 0, begin =0,step = 50, target = 800;
+        
+        btn.onclick = function () {
+            /*清除定时器*/
+            clearInterval(timer);
+            /*设置定时器*/
+            timer = setInterval(function () {
+
+                /*匀速动画公式:开始值+=开始值+步长*/
+//                begin += step;
+
+                /*缓速动画公式:开始值+=(结束值-开始值)*缓动系数*/
+                begin += (target - begin) * 0.2;
+
+                if(begin >= target){
+                    /*如果begin大于target设置begin=target*/
+                    begin = target;
+                    /*清除定时器*/
+                    clearInterval(timer);
+                }
+
+                box.style.marginLeft = begin+'px';
+            },100)
+        }
+    }
+</script>
+</html>

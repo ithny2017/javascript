@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border: none;
+        }
+        img{
+            vertical-align: top;
+        }
+        #box{
+            margin-top: 100px;
+            margin-left: 100px;
+            position: relative;
+        }
+        #small-box{
+            width: 250px;
+            height: 250px;
+            position: relative;
+            border: 1px solid #ccc;
+        }
+        #big-box{
+            width: 250px;
+            height: 250px;
+            border: 1px solid #ccc;
+            position: absolute;
+            left: 260px;
+            top: 0;
+            overflow: hidden;
+            display: none;
+        }
+        #list-box{
+            margin-top: 5px;
+        }
+        #list-box ul{
+            width: 250px;
+            height: 50px;
+            border: 1px solid #ccc;
+        }
+
+        #list-box ul li{
+            float: left;
+            cursor: pointer;
+        }
+        #mask{
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255,255,0,.5);
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: move;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="box-top">
+        <div id="small-box">
+            <img src="images/01.jpg" alt="">
+            <span id="mask"></span>
+        </div>
+        <div id="big-box">
+            <img src="images/1.jpg" width="630px" style="position: absolute; left: 0;top: 0;" alt="">
+        </div>
+    </div>
+    <div id="list-box">
+        <ul>
+            <li><img src="images/001.jpg" alt=""></li>
+            <li><img src="images/002.jpg" alt=""></li>
+            <li><img src="images/003.jpg" alt=""></li>
+            <li><img src="images/004.jpg" alt=""></li>
+            <li><img src="images/005.jpg" alt=""></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var box = document.getElementById('box');
+        var small_box = document.getElementById('small-box');
+        var big_box = document.getElementById('big-box');
+        var list_box = document.getElementById('list-box');
+        var mask = document.getElementById('mask');
+        var big_img = big_box.children[0];
+        var lis = list_box.getElementsByTagName('li');
+        var small_img = small_box.children[0];
+
+        /*移动放大镜*/
+        small_box.onmouseover = function () {
+
+            mask.style.display = 'block';
+            big_box.style.display = 'block';
+
+            small_box.onmousemove = function (event) {
+
+                var e = event || window.event;
+                var maskX = e.clientX - box.offsetLeft - mask.offsetWidth * 0.5;
+                var maskY = e.clientY - box.offsetTop - mask.offsetHeight * 0.5;
+
+
+                /*限制放大镜移出图片*/
+                if (maskX < 0) {
+                    maskX = 0;
+                } else if (maskX >= small_box.offsetWidth - mask.offsetWidth) {
+                    maskX = small_box.offsetWidth - mask.offsetWidth;
+                }
+
+                if (maskY < 0) {
+                    maskY = 0;
+                } else if (maskY >= small_box.offsetHeight - mask.offsetHeight) {
+                    maskY = small_box.offsetHeight - mask.offsetHeight;
+                }
+
+                mask.style.left = maskX + 'px';
+                mask.style.top = maskY + 'px';
+
+                /*
+                *  放大镜效果公式：
+                *  maskX / bigX = small-offset / big-offset;
+                *  bigX = maskX /(small-offset / big-offset);
+                * */
+                big_img.style.left = -maskX/(small_box.offsetWidth/big_img.offsetWidth)+'px';
+                big_img.style.top = -maskY/(small_box.offsetHeight/big_img.offsetHeight)+'px';
+
+                return false;
+            }
+
+        };
+
+        /*鼠标离开*/
+        small_box.onmouseout = function () {
+            mask.style.display = 'none';
+            big_box.style.display = 'none';
+
+        }
+        /*选择图片*/
+        for(var i=0;i<lis.length;i++){
+            /*var li = lis[i];
+            li.index = i+1;
+            li.onmouseover = function () {
+                small_img.src = 'images/0'+this.index+'.jpg';
+                big_img.src = 'images/'+this.index+'.jpg';
+            }*/
+            /*闭包用法*/
+            (function (i) {
+                  var li = lis[i];
+                  li.onmouseover = function () {
+                      small_img.src = 'images/0'+(i+1)+'.jpg';
+                      big_img.src = 'images/'+(i+1)+'.jpg';
+                  }
+            })(i)
+        }
+
+    }
+</script>
+</html>

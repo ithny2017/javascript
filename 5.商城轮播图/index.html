@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #box{
+            width: 460px;
+            height: 300px;
+            margin: 100px auto;
+        }
+        .ul{
+            float: left;
+            width: 80px;
+        }
+        .ul li{
+            height: 33.4px;
+            line-height: 33.4px;
+            text-align: center;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        #center{
+            width: 300px;
+            height: 300px;
+            float: left;
+        }
+        #center a{
+            display: none;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .selected{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div class="ul">
+        <ul>
+            <li class="selected">选项卡1</li>
+            <li>选项卡2</li>
+            <li>选项卡3</li>
+            <li>选项卡4</li>
+            <li>选项卡5</li>
+            <li>选项卡6</li>
+            <li>选项卡7</li>
+            <li>选项卡8</li>
+            <li>选项卡9</li>
+        </ul>
+    </div>
+    <div id="center">
+        <a href="#" style="display: block;"> <img src="images/1.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/2.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/3.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/4.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/5.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/6.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/7.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/8.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/9.jpg"  width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/10.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/11.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/12.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/13.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/14.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/15.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/16.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/17.jpg" width="300px" height="300px" alt=""></a>
+        <a href="#"> <img src="images/18.jpg" width="300px" height="300px" alt=""></a>
+    </div>
+    <div class="ul">
+        <ul>
+            <li>选项卡10</li>
+            <li>选项卡11</li>
+            <li>选项卡12</li>
+            <li>选项卡13</li>
+            <li>选项卡14</li>
+            <li>选项卡15</li>
+            <li>选项卡16</li>
+            <li>选项卡17</li>
+            <li>选项卡18</li>
+        </ul>
+    </div>
+
+</div>
+</body>
+<script>
+    window.onload = function () {
+
+        var allLi = document.getElementsByTagName('li');
+        var allA = document.getElementById('center').getElementsByTagName('a');
+        var index = 0;
+
+        timer = setInterval(_self ,1000);
+
+        for(var j=0;j<allLi.length;j++){
+            var li = allLi[j];
+            li.index = j;
+            li.onmouseover = function () {
+                clearInterval(timer);
+                for(var k=0;k<allLi.length;k++){
+                    allLi[k].className = '';
+                    allA[k].style.display = 'none';
+                }
+                this.className = 'selected';
+                allA[this.index].style.display = 'block';
+            };
+            li.onmouseout = function () {
+                timer = setInterval(_self,1000);
+            }
+        }
+
+        function _self() {
+            index += 1;
+            index %= 18;
+            for(var i=0;i<allLi.length;i++){
+                allLi[i].className = '';
+                allA[i].style.display = 'none';
+            }
+            allLi[index].className = 'selected';
+            allA[index].style.display = 'block';
+        }
+    }
+</script>
+</html>

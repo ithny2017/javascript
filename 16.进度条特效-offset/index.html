@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            margin: 100px auto;
+            width: 1000px;
+            height: 25px;
+            position: relative;
+        }
+        #box-L{
+            width: 900px;
+            height: 25px;
+            background-color: #e8e8e8;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 8px;
+        }
+        #box-R{
+            position: absolute;
+            right: 35px;
+            top: 0;
+        }
+        #box-left{
+            width: 0;
+            height: 25px;
+            background-color: orange;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+        #box-center{
+            width: 25px;
+            height: 45px;
+            position: absolute;
+            left: 0;
+            top: -10px;
+            background-color: orange;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="box-L">
+        <div id="box-left"></div>
+        <span id="box-center"></span>
+    </div>
+    <span id="box-R">0%</span>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var box = document.getElementById('box');
+        var box_L = document.getElementById('box-L');
+        var box_left = document.getElementById('box-left');
+        var box_center = document.getElementById('box-center');
+        var box_R = document.getElementById('box-R');
+
+        document.onmousedown = function () {
+
+            document.onmousemove = function (event) {
+                var e = event || window.event;
+                var boxX = e.clientX - box.offsetLeft;
+
+                if(boxX < 0){
+                    boxX = 0;
+                }else if(boxX >= box_L.offsetWidth-box_center.offsetWidth){
+                    boxX = box_L.offsetWidth-box_center.offsetWidth;
+                }
+
+                box_center.style.left = boxX + 'px';
+                box_left.style.width = boxX + 'px';
+
+                box_R.innerText = parseInt(box_left.offsetWidth/(box_L.offsetWidth-box_center.offsetWidth)*100)+'%';
+
+                return false;
+            }
+        }
+        document.onmouseup = function () {
+            document.onmousemove = null;
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #btn{
+            margin-bottom: 10px;
+        }
+        #box ul{
+            position: relative;
+        }
+        /*#box ul li{*/
+            /*width: 250px;*/
+            /*height: 360px;*/
+            /*!*position: absolute;*!*/
+        /*}*/
+        #box img{
+            /*margin-right: 15px;*/
+            /*margin-bottom: 15px;*/
+            vertical-align: top;
+        }
+
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="btn">
+        <button id="btn1">3列</button>
+        <button id="btn2">4列</button>
+        <button id="btn3">5列</button>
+    </div>
+    <ul>
+        <li><img src="images/1.jpg" alt=""></li>
+        <li><img src="images/2.jpg" alt=""></li>
+        <li><img src="images/3.jpg" alt=""></li>
+        <li><img src="images/4.jpg" alt=""></li>
+        <li><img src="images/5.jpg" alt=""></li>
+        <li><img src="images/6.jpg" alt=""></li>
+        <li><img src="images/7.jpg" alt=""></li>
+        <li><img src="images/8.jpg" alt=""></li>
+        <li><img src="images/9.jpg" alt=""></li>
+        <li><img src="images/10.jpg" alt=""></li>
+        <li><img src="images/11.jpg" alt=""></li>
+        <li><img src="images/12.jpg" alt=""></li>
+        <li><img src="images/13.jpg" alt=""></li>
+        <li><img src="images/14.jpg" alt=""></li>
+        <li><img src="images/15.jpg" alt=""></li>
+        <li><img src="images/16.jpg" alt=""></li>
+        <li><img src="images/17.jpg" alt=""></li>
+        <li><img src="images/18.jpg" alt=""></li>
+        <li><img src="images/19.jpg" alt=""></li>
+        <li><img src="images/20.jpg" alt=""></li>
+        <li><img src="images/21.jpg" alt=""></li>
+        <li><img src="images/22.jpg" alt=""></li>
+        <li><img src="images/23.jpg" alt=""></li>
+        <li><img src="images/24.jpg" alt=""></li>
+        <li><img src="images/25.jpg" alt=""></li>
+        <li><img src="images/26.jpg" alt=""></li>
+        <li><img src="images/27.jpg" alt=""></li>
+        <li><img src="images/28.jpg" alt=""></li>
+        <li><img src="images/29.jpg" alt=""></li>
+        <li><img src="images/30.jpg" alt=""></li>
+    </ul>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var box = document.getElementById('box');
+        var allLi = box.getElementsByTagName('li');
+
+        var btn1 = document.getElementById('btn1');
+        var btn2 = document.getElementById('btn2');
+        var btn3 = document.getElementById('btn3');
+
+        btn1.onclick = function () {
+           _style(allLi,3);
+        }
+        btn2.onclick = function () {
+            _style(allLi,4);
+        }
+        btn3.onclick = function () {
+           _style(allLi,5);
+        }
+
+        /*定位函数*/
+        function _style(allLi,allCol) {
+            var w = 250,h = 360,xy = 15;
+            for(var i=0;i<allLi.length;i++){
+                var li = allLi[i];
+                /*获取当前li在几行几列*/
+                var row = parseInt(i/allCol);
+                var col = parseInt(i%allCol);
+                li.style.position = 'absolute';
+                li.style.top = (h+xy)*row+'px';
+                li.style.left = (w+xy)*col+'px';
+            }
+        }
+    }
+</script>
+</html>

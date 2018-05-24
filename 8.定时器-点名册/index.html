@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 100px;
+            height: 100px;
+            margin: 100px auto;
+        }
+        #span{
+            display: block;
+            color: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <button id="btn">开始</button>
+    <button id="end">点名</button>
+    <span id="span">张三</span>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+
+        var btn = document.getElementById('btn');
+        var end = document.getElementById('end');
+        var span = document.getElementById('span');
+        var timer = 0;
+
+        var min_list = ['张三','李四','王五','唐唐','思思'];
+
+        /*开始*/
+        btn.onclick = function () {
+            /*防止定时器叠加应先清除定时器*/
+            clearInterval(timer);
+
+            timer = setInterval(function () {
+                span.innerText = min_list[parseInt(Math.random()*min_list.length)];
+            },10)
+        };
+        /*结束*/
+     end.onclick = function () {
+            clearInterval(timer);
+        }
+    }
+</script>
+</html>
