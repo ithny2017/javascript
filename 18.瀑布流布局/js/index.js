@@ -63,6 +63,7 @@ function waterFall(parent,child) {
         /*小于列数的为第一行*/
         if(i<cols){
             heightArr.push(boxHeight);
+            box[i].style = '';
         }else{
             /*遍历每个盒子放到数组中高度最小的下面*/
             box[i].style.position = 'absolute';//每个盒子绝对定位
