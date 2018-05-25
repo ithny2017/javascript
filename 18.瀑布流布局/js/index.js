@@ -36,6 +36,7 @@ window.onload = function () {
 
         }
     }
+     /*改变窗口大小*/
     window.onresize = function () {
         clearTimeout(timeout1);
         timeout1 = setTimeout(function () {
