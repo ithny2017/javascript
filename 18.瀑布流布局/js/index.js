@@ -38,7 +38,6 @@ window.onload = function () {
     }
     window.onresize = function () {
         clearTimeout(timeout1);
-        alert(0);
         timeout1 = setTimeout(function () {
             waterFall('main','box');
         },1000)
