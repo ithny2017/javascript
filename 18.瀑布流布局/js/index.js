@@ -3,6 +3,7 @@ window.onload = function () {
     waterFall('main','box');
     /*加载图片*/
     var timeout = 0;
+    var timeout1 = 0;
     window.onscroll = function () {
         clearInterval(timeout);//清除定时器
         if(checkWillLoadImg()){
@@ -34,6 +35,13 @@ window.onload = function () {
             },2000);
 
         }
+    }
+    window.onsize = function () {
+        clearTimeout(timeout1);
+
+        timeout1 = setTimeout(function () {
+            waterFall('main','box');
+        },1000)
     }
 };
 /*瀑布流布局*/
