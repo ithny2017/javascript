@@ -103,14 +103,14 @@
           var li = olli[i];
           li.index = i;
           li.onmouseover = function () {
-            /*清除定时器*/
-            clearInterval(timer);
               for(var j=0;j<olli.length;j++){
                   olli[j].className = '';
               }
               ulIndex = olIndex = this.index;
               olli[olIndex].className = 'selected';
               autoPlay(ul,-500*olIndex,100);
+              /*清除定时器*/
+              clearInterval(timer);
           };
           li.onmouseout = function () {
               /*启动轮播图*/
