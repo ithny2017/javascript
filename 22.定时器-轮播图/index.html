@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        img{
+            vertical-align: top;
+        }
+        #box{
+            width: 500px;
+            height: 375px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            padding: 10px;
+            background-color: orange;
+            position: relative;
+
+        }
+        #main{
+            width: 500px;
+            height: 375px;
+            position: relative;
+            overflow: hidden;
+        }
+        #ul{
+            width: 5000px;
+            height: 375px;
+            background-color: rebeccapurple;
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+
+        }
+        #ul li{
+            float: left;
+            cursor: pointer;
+        }
+        #ol{
+            height: 10px;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
+        #ol li{
+            width: 10px;
+            height: 10px;
+            background-color: gray;
+            float: left;
+            margin-left: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #ol li:first-child{
+            margin-left:0;
+        }
+        .selected{
+            background-color: red !important;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="main">
+        <ul id="ul">
+            <li><img src="images/1.jpg" alt=""></li>
+            <li><img src="images/2.jpg" alt=""></li>
+            <li><img src="images/3.jpg" alt=""></li>
+            <li><img src="images/4.jpg" alt=""></li>
+            <li><img src="images/5.jpg" alt=""></li>
+            <li><img src="images/6.jpg" alt=""></li>
+            <li><img src="images/7.jpg" alt=""></li>
+            <li><img src="images/8.jpg" alt=""></li>
+            <li><img src="images/9.jpg" alt=""></li>
+        </ul>
+    </div>
+    <ol id="ol"></ol>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var ul = document.getElementById('ul');
+        var ol = document.getElementById('ol');
+        var ulli = ul.children;
+        var olli = ol.children;
+        var timer = 0,ulIndex = 0,olIndex = 0;
+        /*克隆元素*/
+        ul.appendChild(ulli[0].cloneNode(true));
+        /*动态创建ol的li*/
+        for(var j=0;j<ulli.length;j++){
+            var oli = document.createElement('li');
+            ol.appendChild(oli);
+        }
+        olli[0].className = 'selected';
+        /*鼠标移动到小点*/
+        for(var i=0;i<olli.length;i++){
+          var li = olli[i];
+          li.index = i;
+          li.onmouseover = function () {
+            /*清除定时器*/
+            clearInterval(timer);
+              for(var j=0;j<olli.length;j++){
+                  olli[j].className = '';
+              }
+              ulIndex = olIndex = this.index;
+              olli[olIndex].className = 'selected';
+              autoPlay(ul,-500*olIndex,100);
+          };
+          li.onmouseout = function () {
+              /*启动轮播图*/
+              timer = setInterval(_play,1000);
+          }
+        }
+        /*鼠标移动到图片*/
+        for(var i=0;i<ulli.length;i++){
+            var li = ulli[i];
+            li.onmouseover = function () {
+                /*清除定时器*/
+                clearInterval(timer);
+            }
+            li.onmouseout = function () {
+                /*启动轮播图*/
+                timer = setInterval(_play,1000);
+            }
+        }
+        /*启动轮播图*/
+        timer = setInterval(_play,1000);
+        /*轮播图函数*/
+        function _play() {
+            /*让ul动起来*/
+            ulIndex++;
+            if(ulIndex > ulli.length-1){
+                ul.style.left = 0;
+                ulIndex = 1;
+            }
+            autoPlay(ul,-ulIndex*500,20);
+            /*让ol改变*/
+            olIndex++;
+            if(olIndex > olli.length-1){
+                olIndex = 0;
+            }
+            for(var i=0;i<olli.length;i++){
+                olli[i].className = '';
+            }
+            olli[olIndex].className = 'selected';
+        }
+
+    };
+    /*匀速动画*/
+    function autoPlay(obj,target,speed) {
+        /*清除定时器*/
+        clearInterval(obj.timer);
+        /*判断方向*/
+        var dir = obj.offsetLeft < target ? speed : -speed;
+        /*启动定时器*/
+        obj.timer = setInterval(function () {
+          obj.style.left = obj.offsetLeft + dir + 'px';
+          if(Math.abs(target - obj.offsetLeft) < Math.abs(dir)){
+              clearInterval(obj.timer);
+          }
+        },20)
+    }
+</script>
+</html>
