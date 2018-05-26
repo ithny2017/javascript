@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        #box{
+            width: 200px;
+            height: 200px;
+            padding: 10px;
+            border: 10px solid #000;
+            background-color: red;
+        }
+    </style>
 </head>
 <body>
-<h1>offset-client-scroll</h1>
+<div id="box"></div>
 </body>
+<script type="text/javascript">
+    var box = document.getElementById('box');
+    /*width和height*/
+    //border + padding + 内容
+    console.log(box.offsetWidth,box.offsetHeight);
+    //padding + 内容
+    console.log(box.clientWidth,box.clientHeight);
+    //padding + 可滚动内容
+    console.log(box.scrollWidth,box.scrollHeight);
+    /*left和top*/
+    //box与有定位的父元素的left和top
+    console.log(box.offsetLeft,box.offsetTop);
+    //box的左边框他右边框
+    console.log(box.clientLeft,box.clientTop);
+    //水平滚动与垂直滚动的长度
+    console.log(box.scrollLeft,box.scrollTop);
+</script>
 </html>
