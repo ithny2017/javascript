@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            width: 100%;
+            height: 3000px;
+        }
+        #panel{
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+        #login{
+            width: 300px;
+            height: 300px;
+            background-color: deepskyblue;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<button id="btn">点击登录</button>
+<div id="panel"></div>
+<div id="login">登录github</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        /*点击按钮*/
+        document.getElementById('btn').onclick = function (event) {
+            /*阻止事件冒泡*/
+            if(event && event.stopPropagation){
+                event.stopPropagation();
+            }else {
+                window.event.cancelBubble = true;
+            }
+            /*显示蒙板*/
+            document.getElementById('panel').style.display = 'block';
+            document.getElementById('login').style.display = 'block';
+
+            /*溢出隐藏*/
+            document.body.style.overflow = 'hidden';
+        }
+        /*点击文档*/
+        document.onclick = function (event) {
+            var e = event || window.event;
+            /*兼容事件源*/
+            var targetId = e.target ? e.target.id : e.srcElement.id;
+
+            if(targetId !== 'login'){
+                /*隐藏蒙板*/
+                document.getElementById('panel').style.display = 'none';
+                document.getElementById('login').style.display = 'none';
+
+                /*显示滚动条*/
+                document.body.style.overflow = 'auto';
+            }else {
+                window.location.href = 'http://github.com';
+            }
+        }
+    }
+</script>
+</html>
