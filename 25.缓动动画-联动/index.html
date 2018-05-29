@@ -26,9 +26,10 @@
     window.onload = function () {
         var btn = document.getElementById('btn');
         var box = document.getElementById('box');
-        var timer = 0, sum = 20;
+        var timer = 0;
 
         btn.onclick = function () {
+            var sum = 20;
             /*清除定时器*/
             clearInterval(timer);
             /*点击马上执行一次*/
