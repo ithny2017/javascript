@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(255,0,0);
+            position: absolute;
+          /*  opacity:0.2;
+            filter: alpha(Opacity=20);*/
+        }
+    </style>
+</head>
+<body>
+<button id="btn">点我变变变</button>
+<div id="box"></div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var btn = document.getElementById('btn');
+        var box = document.getElementById('box');
+        var timer = 0, sum = 20;
+
+        btn.onclick = function () {
+            /*清除定时器*/
+            clearInterval(timer);
+            /*点击马上执行一次*/
+            butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'},function () {
+                butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'});
+            });
+            /*启动定时器*/
+                timer = setInterval(function () {
+                    sum--;
+                    butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'},function () {
+                        butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'});
+                    });
+                    /*清除定时器*/
+                    if(sum === 0){
+                        clearInterval(timer);
+                    }
+                },200);
+        };
+
+        /*多值缓动动画函数*/
+        function butter(obj,json,fn) {
+            /*清除定时器*/
+            clearInterval(obj.timer);
+            var begin = 0,target = 0,speed = 0;
+            /*启动定时器*/
+            obj.timer = setInterval(function () {
+                /*flag*/
+                var flag = true;
+                /*遍历json*/
+                for(var k in json){
+                    /*判断属性是否为opacity透明度*/
+                    if('opacity' === k){
+                        begin = Math.round(parseFloat(getCssValue(obj,k))*100) || 100;
+                        target = parseFloat(json[k])*100;
+                    }else {
+                        begin = parseInt(getCssValue(obj,k)) || 0;
+                        target = parseInt(json[k]);
+                    }
+
+                    /*步长*/
+                    speed = (target - begin) * 0.2;
+                    /*判断是否向上取整*/
+                    speed = (target > begin) ? Math.ceil(speed) : Math.floor(speed);
+
+                    /*判断CSS属性*/
+                    if('opacity' === k){
+                        //Chrom,FF
+                        obj.style[k] = (begin + speed)/100 ;
+                        //IE
+                        obj.style.filter = 'alpha(Opacity:'+ (begin + speed) +')';
+                    }else if('borderRadius' === k){
+                        obj.style.borderRadius = begin + speed + '%';
+                    }else if('backgroundColor' === k){
+                        obj.style.backgroundColor = json[k];
+                    }else {
+                        /*动起来*/
+                        obj.style[k] = begin + speed + 'px';
+                        /*遍历完成再清除定时器*/
+                        if(begin !== target){
+                            flag = false;
+                        }
+                    }
+                }
+                /*清除定时器*/
+                if(flag){
+                    clearInterval(obj.timer);
+                    /*判断是否存在回调函数*/
+                    if(fn){
+                        fn();
+                    }
+                }
+            },20)
+        }
+        /*js获取行外样式的函数*/
+        function getCssValue(obj,name){
+            if(obj.currentStyle){
+                //IE
+                return obj.currentStyle[name];
+            }else{
+                //Chrom,FF
+                return getComputedStyle(obj,null)[name];
+            }
+        }
+    }
+</script>
+</html>
