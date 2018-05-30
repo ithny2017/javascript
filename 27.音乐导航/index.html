@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #box{
+            width: 900px;
+            height: 40px;
+            margin: 100px auto;
+            border: 1px solid #ccc;
+        }
+        ul{
+            width: 900px;
+            height: 40px;
+            overflow: hidden;
+        }
+        ul li{
+            width: 100px;
+            height: 40px;
+            float: left;
+            text-align: center;
+            line-height: 40px;
+            border-right: 1px solid #ccc;
+            box-sizing: border-box;
+            position: relative;
+        }
+        ul li a{
+            width: 100px;
+            height: 40px;
+            display: inline-block;
+            text-decoration: none;
+            color: #000;
+        }
+        ul li:last-child{
+            border-right: none;
+
+        }
+        .current{
+            width: 100px;
+            height: 40px;
+            background-color: deepskyblue;
+            position: absolute;
+            left: 0;
+            top: 40px;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <ul id="ul">
+        <li><a href="">第1选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第2选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第3选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第4选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第5选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第6选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第7选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第8选项</a><span></span>
+            <audio src=""></audio></li>
+        <li><a href="">第9选项</a><span></span>
+            <audio src=""></audio></li>
+    </ul>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var ul = document.getElementById('ul');
+        var ulLis = ul.children;
+
+        /*监听鼠标事件*/
+        for(var i=0;i<ulLis.length;i++){
+            (function (index) {
+                var li = ulLis[index];
+                li.onmouseover = function () {
+                    for(var j=0;j<ulLis.length;j++){
+                        ulLis[j].children[1].className = '';
+                    }
+                    li.children[1].className = 'current';
+                    _butter(li.children[1],{top:0});
+                };
+                li.onmouseout = function () {
+                    _butter(li.children[1],{top:40},function () {
+                    });
+                }
+            })(i)
+        }
+        /*监听键盘按下事件*/
+        document.onkeydown = function (event) {
+            var e = event || window.event;
+            var keyCode = e.keyCode - 49;
+
+            if((keyCode >= 0) && (keyCode <= 8)){
+                for(var i=0;i<ulLis.length;i++){
+                    ulLis[i].className = '';
+                }
+                ulLis[keyCode].children[1].className = 'current';
+                _butter(ulLis[keyCode].children[1],{top:0});
+            }
+
+        };
+        /*监听键盘弹起事件*/
+        document.onkeyup = function (event) {
+            var e = event || window.event;
+            var keyCode = e.keyCode - 49;
+            if((keyCode >= 0) && (keyCode <= 8)){
+                _butter(ulLis[keyCode].children[1],{top:40});
+            }
+        }
+    };
+    /*多值缓动动画函数*/
+    function _butter(obj,json,fn) {
+        /*清除定时器*/
+        clearInterval(obj.timer);
+        var begin = 0,target = 0,speed = 0;
+        /*启动定时器*/
+        obj.timer = setInterval(function () {
+            /*flag*/
+            var flag = true;
+            /*遍历json*/
+            for(var k in json){
+                /*判断属性是否为opacity透明度*/
+                if('opacity' === k){
+                    begin = Math.round(parseFloat(getCssValue(obj,k))*100) || 100;
+                    target = parseFloat(json[k])*100;
+                }else if('scrollTop' === k){
+                    begin = obj.scrollTop;
+                    target = parseInt(json[k]);
+                } else {
+                    begin = parseInt(getCssValue(obj,k)) || 0;
+                    target = parseInt(json[k]);
+                }
+
+                /*步长*/
+                speed = (target - begin) * 0.2;
+                /*判断是否向上取整*/
+                speed = (target > begin) ? Math.ceil(speed) : Math.floor(speed);
+
+                /*判断CSS属性*/
+                if('opacity' === k){
+                    //Chrom,FF
+                    obj.style[k] = (begin + speed)/100 ;
+                    //IE
+                    obj.style.filter = 'alpha(Opacity:'+ (begin + speed) +')';
+                }else if('borderRadius' === k){
+                    obj.style.borderRadius = begin + speed + '%';
+                }else if('backgroundColor' === k){
+                    obj.style.backgroundColor = json[k];
+                }else if ('scrollTop' === k){
+                    obj.scrollTop = begin + speed ;
+                } else {
+                    /*动起来*/
+                    obj.style[k] = begin + speed + 'px';
+                }
+                /*遍历完成再清除定时器*/
+                if(begin !== target){
+                    flag = false;
+                }
+                console.log(1);
+            }
+            /*清除定时器*/
+            if(flag){
+                clearInterval(obj.timer);
+                /*判断是否存在回调函数*/
+                if(fn){
+                    fn();
+                }
+            }
+        },20)
+    }
+    /*js获取行外样式的函数*/
+    function getCssValue(obj,name){
+        if(obj.currentStyle){
+            //IE
+            return obj.currentStyle[name];
+        }else{
+            //Chrom,FF
+            return getComputedStyle(obj,null)[name];
+        }
+    }
+</script>
+</html>
