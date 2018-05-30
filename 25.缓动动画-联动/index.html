@@ -33,14 +33,14 @@
             /*清除定时器*/
             clearInterval(timer);
             /*点击马上执行一次*/
-            butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'},function () {
-                butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'});
+            _butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'},function () {
+                _butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'});
             });
             /*启动定时器*/
                 timer = setInterval(function () {
                     sum--;
-                    butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'},function () {
-                        butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'});
+                    _butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'},function () {
+                        _butter(box,{'borderRadius':(Math.random().toFixed(2))*100 +'%','backgroundColor':'rgb('+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+','+ Math.round(Math.random()*255)+')','opacity':Math.random().toFixed(2),'width':Math.random()*1000+'px','height':Math.random()*1000+'px','left':Math.random()*1000+'px','top':Math.random()*500+'px'});
                     });
                     /*清除定时器*/
                     if(sum === 0){
@@ -50,7 +50,7 @@
         };
 
         /*多值缓动动画函数*/
-        function butter(obj,json,fn) {
+        function _butter(obj,json,fn) {
             /*清除定时器*/
             clearInterval(obj.timer);
             var begin = 0,target = 0,speed = 0;
