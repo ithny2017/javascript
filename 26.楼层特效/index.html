@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border:none;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        #box{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #ul{
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            /*background-color: tomato;*/
+        }
+        #ul li{
+            width: 100%;
+            height: 100%;
+        }
+        #ol{
+            width: 80px;
+            height: 125px;
+            border: 1px dotted #ccc;
+            text-align: center;
+            background-color: #ccc;
+            position: fixed;
+            left: 80px;
+            top: 200px;
+
+        }
+        #ol li{
+            width: 80px;
+            height: 24px;
+            line-height: 24px;
+            border-bottom:1px solid #fff;
+            cursor: pointer;
+        }
+        .selected{
+            background-color: orange!important;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <ol id="ol">
+        <li class="selected">第1层</li>
+        <li>第2层</li>
+        <li>第3层</li>
+        <li>第4层</li>
+        <li>第5层</li>
+    </ol>
+    <ul id="ul">
+        <li>第1层内容</li>
+        <li>第2层内容</li>
+        <li>第3层内容</li>
+        <li>第4层内容</li>
+        <li>第5层内容</li>
+    </ul>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var ul = document.getElementById('ul');
+        var ol = document.getElementById('ol');
+        var ulLis = ul.children;
+        var olLis = ol.children;
+        var isClick = false;
+        /*背景色*/
+        var bgColor = ['red','green','yellow','deepskyblue','tomato'];
+        for(var i=0;i<bgColor.length;i++){
+            ulLis[i].style.backgroundColor = bgColor[i];
+        }
+        /*监听鼠标事件*/
+        for(var k=0;k<olLis.length;k++){
+            (function (index) {
+                var li = olLis[index];
+                li.onmousedown = function () {
+                    isClick = true;
+                    for(var j=0;j<olLis.length;j++){
+                        olLis[j].className = '';
+                    }
+                    olLis[index].className = 'selected';
+                    /*缓动动画*/
+                    _butter(document.documentElement,{scrollTop:index * _client().height},function () {
+                        isClick = false;
+                    });
+                }
+            })(k)
+        }
+        /*滚动事件*/
+        window.onscroll = function () {
+            if(!isClick){
+                var scroll = Math.ceil(_scroll().scrollTop);
+                for(var i=0;i<olLis.length;i++){
+                    if(scroll+_client().height > ulLis[i].offsetTop){
+                        for(var j=0;j<olLis.length;j++){
+                            olLis[j].className = '';
+                        }
+                        olLis[i].className = 'selected';
+                    }
+                }
+            }
+        }
+    };
+    /*多值缓动动画函数*/
+    function _butter(obj,json,fn) {
+        /*清除定时器*/
+        clearInterval(obj.timer);
+        var begin = 0,target = 0,speed = 0;
+        /*启动定时器*/
+        obj.timer = setInterval(function () {
+            /*flag*/
+            var flag = true;
+            /*遍历json*/
+            for(var k in json){
+                /*判断属性是否为opacity透明度*/
+                if('opacity' === k){
+                    begin = Math.round(parseFloat(getCssValue(obj,k))*100) || 100;
+                    target = parseFloat(json[k])*100;
+                }else if('scrollTop' === k){
+                    begin = obj.scrollTop;
+                    target = parseInt(json[k]);
+                } else {
+                    begin = parseInt(getCssValue(obj,k)) || 0;
+                    target = parseInt(json[k]);
+                }
+
+                /*步长*/
+                speed = (target - begin) * 0.2;
+                /*判断是否向上取整*/
+                speed = (target > begin) ? Math.ceil(speed) : Math.floor(speed);
+
+                /*判断CSS属性*/
+                if('opacity' === k){
+                    //Chrom,FF
+                    obj.style[k] = (begin + speed)/100 ;
+                    //IE
+                    obj.style.filter = 'alpha(Opacity:'+ (begin + speed) +')';
+                }else if('borderRadius' === k){
+                    obj.style.borderRadius = begin + speed + '%';
+                }else if('backgroundColor' === k){
+                    obj.style.backgroundColor = json[k];
+                }else if ('scrollTop' === k){
+                    obj.scrollTop = begin + speed ;
+                } else {
+                    /*动起来*/
+                    obj.style[k] = begin + speed + 'px';
+                }
+                /*遍历完成再清除定时器*/
+                if(begin !== target){
+                    flag = false;
+                }
+            }
+            /*清除定时器*/
+            if(flag){
+                clearInterval(obj.timer);
+                /*判断是否存在回调函数*/
+                if(fn){
+                    fn();
+                }
+            }
+        },20)
+    }
+    /*js获取行外样式的函数*/
+    function getCssValue(obj,name){
+        if(obj.currentStyle){
+            //IE
+            return obj.currentStyle[name];
+        }else{
+            //Chrom,FF
+            return getComputedStyle(obj,null)[name];
+        }
+    }
+    /*获取可视区域的高度与宽度*/
+    function _client() {
+        if(window.innerWidth){
+           return {
+               width : window.innerWidth,
+               height : window.innerHeight
+        }
+        }else if((document.body) && (document.body.clientWidth)){
+            return {
+                width : document.body.clientWidth,
+                height : document.body.clientHeight
+            }
+        }else {
+            return {
+                width : document.documentElement.clientWidth,
+                height : document.documentElement.clientHeight
+            }
+        }
+
+    }
+    /*兼容scroll*/
+    function _scroll() {
+       if(window.pageYOffset){
+           return {
+               scrollTop : window.pageYOffset,
+               scrollLeft : window.pageXOffset
+           }
+       }else if(document.documentElement){
+           return {
+               scrollTop : document.documentElement.scrollTop,
+               scrollleft : document.documentElement.scrollLeft
+           }
+       }else {
+           return {
+               scrollTop : document.body.scrollTop,
+               scrollLeft : document.body.scrollLeft
+           }
+       }
+    }
+</script>
+</html>
