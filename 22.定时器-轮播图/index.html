@@ -108,13 +108,13 @@
               }
               ulIndex = olIndex = this.index;
               olli[olIndex].className = 'selected';
-              autoPlay(ul,-500*olIndex,100);
+              _constant(ul,-500*olIndex,100);
               /*清除定时器*/
               clearInterval(timer);
           };
           li.onmouseout = function () {
               /*启动轮播图*/
-              timer = setInterval(_play,1000);
+              timer = setInterval(_autoplay,1000);
           }
         }
         /*鼠标移动到图片*/
@@ -126,20 +126,20 @@
             }
             li.onmouseout = function () {
                 /*启动轮播图*/
-                timer = setInterval(_play,1000);
+                timer = setInterval(_autoplay,1000);
             }
         }
         /*启动轮播图*/
-        timer = setInterval(_play,1000);
+        timer = setInterval(_autoplay,1000);
         /*轮播图函数*/
-        function _play() {
+        function _autoplay() {
             /*让ul动起来*/
             ulIndex++;
             if(ulIndex > ulli.length-1){
                 ul.style.left = 0;
                 ulIndex = 1;
             }
-            autoPlay(ul,-ulIndex*500,20);
+            _constant(ul,-ulIndex*500,20);
             /*让ol改变*/
             olIndex++;
             if(olIndex > olli.length-1){
@@ -153,7 +153,7 @@
 
     };
     /*匀速动画*/
-    function autoPlay(obj,target,speed) {
+    function _constant(obj,target,speed) {
         /*清除定时器*/
         clearInterval(obj.timer);
         /*判断方向*/
