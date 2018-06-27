@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 500px;
+            height: 400px;
+            background-color: red;
+            margin: 100px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #banner{
+            width: 500px;
+            height: 360px;
+            background-color: green;
+        }
+        #ctl{
+            width: 500px;
+            height: 40px;
+            background-color: oldlace;
+            text-align: center;
+        }
+        .span{
+            width: 30px;
+            height: 10px;
+            margin: 10px;
+            background-color: orange;
+            display: inline-block;
+            cursor: pointer;
+            text-indent: 30em;
+        }
+        .banner-img{
+            width: 500px;
+            height: 360px;
+            position: absolute;
+            left: 500px;
+            top: 0;
+        }
+        img{
+            vertical-align: top;
+            float: left;
+        }
+        #ctl .span:first-child{
+            content: '<';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            margin-top: -10px;
+        }
+        #ctl .span:last-child{
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            margin-top: -10px;
+        }
+        .current{
+            left: 0;
+            top: 0;
+        }
+        #prev:before{
+            content: '<';
+            width: 20px;
+            height: 50px;
+            font-size:30px;
+            color: red;
+            background-color: rgba(255,255,0,0.3);
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            margin-top: -30px;
+            cursor: pointer;
+        }
+        #next:before{
+            content: '>';
+            width: 20px;
+            height: 50px;
+            font-size:30px;
+            color: red;
+            background-color: rgba(255,255,0,0.3);
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            margin-top: -30px;
+            cursor: pointer;
+        }
+        .selected{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="banner">
+        <div id="banner-main">
+            <div class="banner-img current">
+                <img src="images/1.jpg" alt="">
+                <img src="images/2.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/3.jpg" alt="">
+                <img src="images/4.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/5.jpg" alt="">
+                <img src="images/6.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/7.jpg" alt="">
+                <img src="images/8.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/9.jpg" alt="">
+                <img src="images/10.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/11.jpg" alt="">
+                <img src="images/12.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/13.jpg" alt="">
+                <img src="images/14.jpg" alt="">
+            </div>
+            <div class="banner-img">
+                <img src="images/15.jpg" alt="">
+                <img src="images/16.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <div id="ctl">
+       <span class="prev" id="prev"></span>
+       <span class="next" id="next"></span>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var box = document.getElementById('box');
+        var banner = document.getElementById('banner');
+        var banner_main = document.getElementById('banner-main').children;
+        var ctl = document.getElementById('ctl');
+        var prev = document.getElementById('prev');
+        var next = document.getElementById('next');
+        var isNow = 0;
+
+        /*创建控制器*/
+        for(var i=0;i<banner_main.length;i++){
+            var span = document.createElement('span');
+            span.className = 'span';
+            span.innerText = banner_main.length - i - 1;
+            ctl.insertBefore(span,ctl.children[1]);
+        }
+        ctl.children[1].className = 'span selected';
+        var banner_w = banner.offsetWidth;
+        for(var j=0;j<ctl.children.length;j++){
+            ctl.children[j].onclick = function () {
+                if(this.className === 'prev'){
+                    _butter(banner_main[isNow],{left:-banner_w});
+                    isNow++;
+                    if(isNow >= banner_main.length){
+                        isNow = 0;
+                    }
+                    banner_main[isNow].style.left = banner_w + 'px';
+                    _butter(banner_main[isNow],{left:0});
+                }else if(this.className === 'next'){
+                    _butter(banner_main[isNow],{left:banner_w});
+                    if(isNow === 0){
+                        isNow = banner_main.length;
+                    }
+                    isNow--;
+                    banner_main[isNow].style.left = -banner_w + 'px';
+                    _butter(banner_main[isNow],{left:0});
+                }else {
+                    if(this.innerText > isNow){
+                        _butter(banner_main[isNow],{left:banner_w});
+                        banner_main[this.innerText].style.left = -banner_w + 'px';
+
+                        isNow = parseInt(this.innerText);
+                        _butter(banner_main[isNow],{left:0});
+                    }else if(this.innerText < isNow){
+                        _butter(banner_main[isNow],{left:-banner_w});
+                        banner_main[this.innerText].style.left = banner_w + 'px';
+
+                        isNow = parseInt(this.innerText);
+                        _butter(banner_main[isNow],{left:0});
+                    }
+                }
+                /*改变控制器class*/
+                for(var i=1;i<ctl.children.length-1;i++){
+                    ctl.children[i].className = 'span';
+                }
+                ctl.children[isNow+1].className = 'span selected';
+            }
+        }
+
+    };
+
+    /*多值缓动动画函数*/
+    function _butter(obj,json,fn) {
+        /*清除定时器*/
+        clearInterval(obj.timer);
+        var begin = 0,target = 0,speed = 0;
+        /*启动定时器*/
+        obj.timer = setInterval(function () {
+            /*flag*/
+            var flag = true;
+            /*遍历json*/
+            for(var k in json){
+                /*判断属性是否为opacity透明度*/
+                if('opacity' === k){
+                    begin = Math.round(parseFloat(getCssValue(obj,k))*100) || 100;
+                    target = parseFloat(json[k])*100;
+                }else if('scrollTop' === k){
+                    begin = obj.scrollTop;
+                    target = parseInt(json[k]);
+                } else {
+                    begin = parseInt(getCssValue(obj,k)) || 0;
+                    target = parseInt(json[k]);
+                }
+
+                /*步长*/
+                speed = (target - begin) * 0.2;
+                /*判断是否向上取整*/
+                speed = (target > begin) ? Math.ceil(speed) : Math.floor(speed);
+
+                /*判断CSS属性*/
+                if('opacity' === k){
+                    //Chrom,FF
+                    obj.style[k] = (begin + speed)/100 ;
+                    //IE
+                    obj.style.filter = 'alpha(Opacity:'+ (begin + speed) +')';
+                }else if('borderRadius' === k){
+                    obj.style.borderRadius = begin + speed + '%';
+                }else if('backgroundColor' === k){
+                    obj.style.backgroundColor = json[k];
+                }else if ('scrollTop' === k){
+                    obj.scrollTop = begin + speed ;
+                } else {
+                    /*动起来*/
+                    obj.style[k] = begin + speed + 'px';
+                }
+                /*遍历完成再清除定时器*/
+                if(begin !== target){
+                    flag = false;
+                }
+                console.log(1);
+            }
+            /*清除定时器*/
+            if(flag){
+                clearInterval(obj.timer);
+                /*判断是否存在回调函数*/
+                if(fn){
+                    fn();
+                }
+            }
+        },20)
+    }
+    /*js获取行外样式的函数*/
+    function getCssValue(obj,name){
+        if(obj.currentStyle){
+            //IE
+            return obj.currentStyle[name];
+        }else{
+            //Chrom,FF
+            return getComputedStyle(obj,null)[name];
+        }
+    }
+</script>
+</html>
