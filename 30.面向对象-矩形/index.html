@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        function Box(option) {
+            this._init(option);
+        }
+        Box.prototype = {
+            _init:function (option) {
+                option = option || {};
+
+                this.parentId = option.parentId;
+                this.width = option.width || 200;
+                this.height = option.height || 200;
+                this.left = option.left || 0;
+                this.top = option.top || 0;
+                this.backgroundColor = option.backgroundColor || red;
+            },
+            render:function () {
+                var parentNode = document.getElementById(this.parentId);
+                var childNode = document.createElement('div');
+
+                childNode.style.position = 'absolute';
+                childNode.style.width = this.width + 'px';
+                childNode.style.height = this.height + 'px';
+                childNode.style.left = this.left + 'px';
+                childNode.style.top = this.top + 'px';
+                childNode.style.backgroundColor = this.backgroundColor;
+
+                parentNode.appendChild(childNode);
+            }
+        };
+        var box = new Box({
+            parentId:'box',
+            width:500,
+            height:300,
+            left:100,
+            top:100,
+            backgroundColor:'green'
+        });
+        box.render();
+    }
+</script>
+</html>
